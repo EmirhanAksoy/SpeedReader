@@ -2,6 +2,10 @@
 
 
 
+https://github.com/user-attachments/assets/cf0dc547-f416-4e2c-b71c-3d9675a051b9
+
+
+
 ## 📖 Speed Reader Chrome Extension
 
 Speed Reader is a Chrome extension that helps you read web content faster by displaying words one-by-one in a pop-up modal with adjustable speed. Ideal for speed-reading practice and focused reading experiences.
