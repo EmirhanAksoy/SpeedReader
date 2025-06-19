@@ -1,3 +1,6 @@
+![apple-touch-icon](https://github.com/user-attachments/assets/9c346701-76ca-4fae-ba81-20e290aae902)
+
+
 
 ## 📖 Speed Reader Chrome Extension
 
