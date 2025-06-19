@@ -1,0 +1,91 @@
+#speed-reader-modal {
+  position: fixed;
+  background: #111;
+  color: white;
+  padding: 30px 40px;
+  border-radius: 14px;
+  font-size: 40px;
+  z-index: 9999;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  font-family: sans-serif;
+  display: none;
+  text-align: center;
+  max-width: 80%;
+  min-width: 200px;
+  max-height: 90vh;
+  resize: both;
+  overflow: auto;
+  line-height: 1.4;
+}
+
+#reader-text {
+  margin-bottom: 20px;
+  word-wrap: break-word;
+}
+
+#controls {
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+#speed-multiplier {
+  width: 80px;
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+#pause-resume-button,
+#cancel-reading-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+#pause-resume-button {
+  background: #fbc02d;
+  color: black;
+}
+
+#pause-resume-button:hover {
+  background-color: #f9a825;
+}
+
+#cancel-reading-button {
+  background: #e53935;
+  color: white;
+}
+
+#cancel-reading-button:hover {
+  background-color: #d32f2f;
+}
+
+#progress-indicator {
+  font-size: 14px;
+  color: #ccc;
+}
+
+#start-reading-button {
+  position: absolute;
+  display: none;
+  padding: 10px 16px;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  z-index: 9999;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s;
+}
+
+#start-reading-button:hover {
+  background-color: #1565c0;
+}
