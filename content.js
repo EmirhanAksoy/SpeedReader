@@ -6,6 +6,37 @@ let intervalId = null;
 const baseWPM = 300;
 let wpm = baseWPM;
 
+// Configuration variables
+let isExtensionEnabled = true;
+let minWordCount = 30;
+
+// Supported HTML tags for text content
+const supportedTags = ['p', 'div', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'td', 'th', 'article', 'section', 'blockquote', 'pre', 'code'];
+
+// Load settings from Chrome storage
+chrome.storage.sync.get(['speedReaderEnabled', 'speedReaderMinWords'], (result) => {
+  isExtensionEnabled = result.speedReaderEnabled !== false; // Default to true
+  minWordCount = result.speedReaderMinWords || 30; // Default to 30
+});
+
+// Function to count words in text
+function countWords(text) {
+  return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+}
+
+// Function to check if element is suitable for speed reading
+function isElementSuitableForReading(element) {
+  if (!isExtensionEnabled) return false;
+  
+  const tagName = element.tagName.toLowerCase();
+  if (!supportedTags.includes(tagName)) return false;
+  
+  const text = element.innerText || element.textContent || '';
+  const wordCount = countWords(text);
+  
+  return wordCount >= minWordCount;
+}
+
 const modal = document.createElement('div');
 modal.id = 'speed-reader-modal';
 modal.innerHTML = `
@@ -59,7 +90,7 @@ let hoveredParagraph = null;
 let hideBtnTimeout;
 
 document.addEventListener('mouseover', (e) => {
-  if (e.target.tagName.toLowerCase() === 'p') {
+  if (isElementSuitableForReading(e.target)) {
     hoveredParagraph = e.target;
     const rect = hoveredParagraph.getBoundingClientRect();
     startBtn.style.top = `${window.scrollY + rect.top - 40}px`;
@@ -132,8 +163,57 @@ function stopReading() {
   startBtn.style.display = 'none';
 }
 
+// Function to show toggle notification
+function showToggleNotification(enabled) {
+  const notification = document.createElement('div');
+  notification.id = 'speed-reader-notification';
+  notification.textContent = `Speed Reader ${enabled ? 'Enabled' : 'Disabled'}`;
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: ${enabled ? '#4caf50' : '#f44336'};
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: sans-serif;
+    z-index: 10000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.3s ease;
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Auto-remove after 3 seconds
+  setTimeout(() => {
+    notification.style.opacity = '0';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
+
 // Keyboard controls
 document.addEventListener('keydown', (e) => {
+  // Quick toggle: Ctrl+Shift+R to enable/disable extension
+  if (e.ctrlKey && e.shiftKey && e.code === 'KeyR') {
+    isExtensionEnabled = !isExtensionEnabled;
+    chrome.storage.sync.set({ speedReaderEnabled: isExtensionEnabled });
+    
+    // Hide start button if disabled
+    if (!isExtensionEnabled) {
+      startBtn.style.display = 'none';
+    }
+    
+    // Show notification
+    showToggleNotification(isExtensionEnabled);
+    e.preventDefault();
+    return;
+  }
+  
   if (!reading) return;
 
   if (e.code === 'Space') {
