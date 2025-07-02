@@ -14,10 +14,29 @@ let minWordCount = 30;
 const supportedTags = ['p', 'div', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'td', 'th', 'article', 'section', 'blockquote', 'pre', 'code'];
 
 // Load settings from Chrome storage
-chrome.storage.sync.get(['speedReaderEnabled', 'speedReaderMinWords'], (result) => {
-  isExtensionEnabled = result.speedReaderEnabled !== false; // Default to true
-  minWordCount = result.speedReaderMinWords || 30; // Default to 30
-});
+try {
+  if (chrome && chrome.storage && chrome.storage.sync) {
+    chrome.storage.sync.get(['speedReaderEnabled', 'speedReaderMinWords'], (result) => {
+      isExtensionEnabled = result.speedReaderEnabled !== false; // Default to true
+      minWordCount = result.speedReaderMinWords || 30; // Default to 30
+    });
+  }
+} catch (error) {
+  console.warn('Failed to load chrome storage settings:', error.message);
+  // Use default values if storage is not available
+}
+
+// Helper function to safely handle chrome storage operations
+function safeChromeStorageSet(data, callback) {
+  try {
+    if (chrome && chrome.storage && chrome.storage.sync) {
+      chrome.storage.sync.set(data, callback);
+    }
+  } catch (error) {
+    console.warn('Chrome storage operation failed:', error.message);
+    // Silently fail if extension context is invalidated
+  }
+}
 
 // Function to count words in text
 function countWords(text) {
@@ -201,7 +220,7 @@ document.addEventListener('keydown', (e) => {
   // Quick toggle: Ctrl+Shift+R to enable/disable extension
   if (e.ctrlKey && e.shiftKey && e.code === 'KeyR') {
     isExtensionEnabled = !isExtensionEnabled;
-    chrome.storage.sync.set({ speedReaderEnabled: isExtensionEnabled });
+    safeChromeStorageSet({ speedReaderEnabled: isExtensionEnabled });
     
     // Hide start button if disabled
     if (!isExtensionEnabled) {
