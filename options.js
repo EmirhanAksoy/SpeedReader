@@ -5,8 +5,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('save');
     const statusDiv = document.getElementById('status');
 
+    // Helper function to safely handle chrome storage operations
+    function safeChromeStorageGet(keys, callback) {
+        try {
+            if (chrome && chrome.storage && chrome.storage.sync) {
+                chrome.storage.sync.get(keys, callback);
+            }
+        } catch (error) {
+            console.warn('Chrome storage get operation failed:', error.message);
+            callback({}); // Return empty object to use default values
+        }
+    }
+
+    function safeChromeStorageSet(data, callback) {
+        try {
+            if (chrome && chrome.storage && chrome.storage.sync) {
+                chrome.storage.sync.set(data, callback);
+            }
+        } catch (error) {
+            console.warn('Chrome storage set operation failed:', error.message);
+            if (callback) callback();
+        }
+    }
+
     // Load current settings
-    chrome.storage.sync.get(['speedReaderEnabled', 'speedReaderMinWords'], (result) => {
+    safeChromeStorageGet(['speedReaderEnabled', 'speedReaderMinWords'], (result) => {
         enabledCheckbox.checked = result.speedReaderEnabled !== false; // Default to true
         minWordsInput.value = result.speedReaderMinWords || 30; // Default to 30
     });
@@ -18,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
             speedReaderMinWords: parseInt(minWordsInput.value, 10)
         };
 
-        chrome.storage.sync.set(settings, () => {
+        safeChromeStorageSet(settings, () => {
             // Show success message
             statusDiv.className = 'status success';
             statusDiv.textContent = 'Settings saved successfully!';
