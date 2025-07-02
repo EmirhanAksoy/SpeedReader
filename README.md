@@ -14,13 +14,17 @@ Speed Reader is a Chrome extension that helps you read web content faster by dis
 
 ### 🚀 Features
 
-* 🖱 **Activate by hovering** over any paragraph
+* 🖱 **Activate by hovering** over any text element (paragraphs, divs, headings, list items, etc.)
+* 📊 **Smart word count detection** - only shows button for text with enough content (configurable, default 30 words)
 * 🔘 **Click "Start Reading"** to begin word-by-word display
 * 🔢 **Adjustable speed** via multipliers (`1x` to `5x`)
 * ⏸ **Pause / Resume** reading with button or `Space` key
 * ❌ **Cancel** reading with button or `Esc` key
 * 📊 **Live progress indicator** (e.g., `14 / 80`)
 * 🖱 **Draggable and resizable** modal window
+* ⚙️ **Configurable settings** - minimum word count, enable/disable functionality
+* ⌨️ **Quick toggle** with `Ctrl + Shift + R` keyboard shortcut
+* 🏷️ **Supports multiple HTML tags**: paragraphs, divs, spans, headings (h1-h6), list items, table cells, articles, sections, blockquotes, and code blocks
 
 ---
 
@@ -31,6 +35,8 @@ speed-reader-extension/
 ├── manifest.json
 ├── content.js
 ├── style.css
+├── options.html
+├── options.js
 └── icons/
     ├── icon16.png
     ├── icon32.png
@@ -52,8 +58,10 @@ speed-reader-extension/
 
 ### 🛠 How to Use
 
-1. Visit any web page with paragraphs (e.g., Wikipedia)
-2. Hover over a paragraph → a **"Start Reading"** button appears
+1. Visit any web page with text content (e.g., Wikipedia, blogs, news sites)
+2. Hover over text elements with sufficient content → a **"Start Reading"** button appears
+   * Works with paragraphs, divs, headings, list items, and other text elements
+   * Only appears for text with at least 30 words (configurable in settings)
 3. Click the button → the speed-reader modal will appear
 4. Use:
 
@@ -62,14 +70,19 @@ speed-reader-extension/
    * **Cancel** button or `Esc` key
 5. Drag or resize the modal freely on screen
 
+**Configuration:**
+* Right-click the extension icon and select "Options" to configure settings
+* Use `Ctrl + Shift + R` to quickly enable/disable the extension on any page
+
 ---
 
 ### 🧪 Keyboard Shortcuts
 
-| Action       | Shortcut |
-| ------------ | -------- |
-| Pause/Resume | `Space`  |
-| Cancel       | `Escape` |
+| Action           | Shortcut           |
+| ---------------- | ------------------ |
+| Pause/Resume     | `Space`            |
+| Cancel           | `Escape`           |
+| Toggle Extension | `Ctrl + Shift + R` |
 
 ---
 

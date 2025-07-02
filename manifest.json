@@ -3,7 +3,7 @@
     "name": "Speed Reader on Hover",
     "version": "1.0",
     "description": "Click Start Reading on paragraphs to read fast with WPM and controls.",
-    "permissions": [],
+    "permissions": ["storage"],
     "content_scripts": [
         {
             "matches": [
@@ -29,5 +29,6 @@
             "32": "icons/icon32.png"
         },
         "default_title": "Speed Reader"
-    }
+    },
+    "options_page": "options.html"
 }
