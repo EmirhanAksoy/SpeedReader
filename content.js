@@ -64,7 +64,7 @@ document.addEventListener('mouseover', (e) => {
     const rect = hoveredParagraph.getBoundingClientRect();
     startBtn.style.top = `${window.scrollY + rect.top - 40}px`;
     startBtn.style.left = `${window.scrollX + rect.left}px`;
-    startBtn.style.display = 'block';
+    if (!reading) startBtn.style.display = 'block';
     clearTimeout(hideBtnTimeout);
   }
 });
